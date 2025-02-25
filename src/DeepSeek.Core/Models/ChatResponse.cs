@@ -120,7 +120,7 @@ public class Usage
     public int TotalTokens { get; set; }
 
     [JsonPropertyName("prompt_tokens_details")]
-    public CompletionTokensDetails Details { get; set; }
+    public CompletionTokensDetails? Details { get; set; }
 
     public class CompletionTokensDetails
     {

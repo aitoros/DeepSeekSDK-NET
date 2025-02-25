@@ -38,6 +38,7 @@ public class DeepSeekClient
     {
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+        TypeInfoResolver = SourceGenerationContext.Default,
         Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
     };
 
@@ -98,7 +99,9 @@ public class DeepSeekClient
             ErrorMsg = response.StatusCode.ToString() + res;
             return null;
         }
-        return JsonSerializer.Deserialize<ModelResponse>(await response.Content.ReadAsStringAsync(), JsonSerializerOptions);
+
+        var content = await response.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<ModelResponse>(content, JsonSerializerOptions);
     }
 
     /// <summary>
@@ -108,7 +111,7 @@ public class DeepSeekClient
     public async Task<ChatResponse?> ChatAsync(ChatRequest request, CancellationToken cancellationToken)
     {
         request.Stream = false;
-        var content = new StringContent(JsonSerializer.Serialize(request, JsonSerializerOptions), Encoding.UTF8, "application/json");
+        var content = new StringContent(JsonSerializer.Serialize(request, typeof(ChatRequest), JsonSerializerOptions), Encoding.UTF8, "application/json");
 
         var response = await Http.PostAsync(ChatEndpoint, content, cancellationToken);
         if (!response.IsSuccessStatusCode)
@@ -154,7 +157,7 @@ public class DeepSeekClient
                 var line = await reader.ReadLineAsync();
                 if (line != null && line.StartsWith("data: "))
                 {
-                    
+
                     var json = line.Substring(6);
                     if (!string.IsNullOrWhiteSpace(json) && json != StreamDoneSign)
                     {

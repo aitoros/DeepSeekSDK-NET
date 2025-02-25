@@ -51,8 +51,8 @@ static async Task StreamChatAsync(DeepSeekClient client)
         Messages = [
             Message.NewUserMessage("which is greater between 9.11 and 9.8?")
         ],
-        Model = DeepSeekModels.ChatModel
-        //Model = DeepSeekModels.ReasonerModel
+        //Model = DeepSeekModels.ChatModel
+        Model = DeepSeekModels.ReasonerModel
     };
 
     var choices = client.ChatStreamAsync(request, new CancellationToken());
@@ -63,7 +63,15 @@ static async Task StreamChatAsync(DeepSeekClient client)
     }
     await foreach (var choice in choices)
     {
-        Console.Write(choice.Delta?.Content);
+        // output Cot
+        if (!string.IsNullOrWhiteSpace(choice.Delta?.ReasoningContent))
+        {
+            Console.WriteLine(choice.Delta.ReasoningContent);
+        }
+        else
+        {
+            Console.Write(choice.Delta?.Content);
+        }
     }
     Console.WriteLine();
 }
