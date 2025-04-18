@@ -12,7 +12,7 @@ namespace DeepSeek.Core;
 public class DeepSeekClient
 {
     /// <summary>
-    /// 域名
+    /// base address
     /// </summary>
     public readonly string BaseAddress = "https://api.deepseek.com";
     public readonly string BetaBaseAddress = "https://api.deepseek.com/beta";
@@ -130,7 +130,7 @@ public class DeepSeekClient
     }
 
     /// <summary>
-    /// 流式输出 
+    /// streaming output
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
@@ -154,10 +154,9 @@ public class DeepSeekClient
 
             while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested)
             {
-                var line = await reader.ReadLineAsync();
+                var line = await reader.ReadLineAsync(cancellationToken);
                 if (line != null && line.StartsWith("data: "))
                 {
-
                     var json = line.Substring(6);
                     if (!string.IsNullOrWhiteSpace(json) && json != StreamDoneSign)
                     {
@@ -180,6 +179,41 @@ public class DeepSeekClient
         }
     }
 
+    /// <summary>
+    /// return raw response string
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public async IAsyncEnumerable<string?>? ChatStreamWithStringAsync(ChatRequest request, [EnumeratorCancellation] CancellationToken cancellationToken)
+    {
+        request.Stream = true;
+        var content = new StringContent(JsonSerializer.Serialize(request, JsonSerializerOptions), Encoding.UTF8, "application/json");
+
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, ChatEndpoint)
+        {
+            Content = content,
+        };
+        using var response = await Http.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
+            using var reader = new StreamReader(stream);
+
+            while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested)
+            {
+                var line = await reader.ReadLineAsync(cancellationToken);
+                yield return line;
+            }
+        }
+        else
+        {
+            var res = await response.Content.ReadAsStringAsync();
+            ErrorMsg = response.StatusCode.ToString() + res;
+            yield break;
+        }
+    }
 
     /// <summary>
     /// Completions
