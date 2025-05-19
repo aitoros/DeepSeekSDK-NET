@@ -8,7 +8,7 @@
         <Company>Geethin</Company>
         <Description>DeepSeek API SDK</Description>
         <PackageReleaseNotes>
-            1. Add AOT support
+            1. Add ChatStreamWithStringAsync to get raw response.
         </PackageReleaseNotes>
         <PackageProjectUrl>https://github.com/niltor/DeepSeekSDK-NET</PackageProjectUrl>
         <RepositoryUrl>https://github.com/niltor/DeepSeekSDK-NET</RepositoryUrl>
@@ -16,7 +16,7 @@
         <PackageTags>LLM,AI,DeepSeek,API,SDK</PackageTags>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageIcon>logo.jpg</PackageIcon>
-        <Version>1.1.4</Version>
+        <Version>1.1.5</Version>
         <PackageId>Ater.DeepSeek.AspNetCore</PackageId>
         <Title>DeepSeek.AspNetCore</Title>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
