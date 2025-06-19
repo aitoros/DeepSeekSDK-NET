@@ -19,8 +19,8 @@ public class DeepSeekClient
     /// <summary>
     /// chat endpoint
     /// </summary>
-    public string ChatEndpoint { get; private set; } = "/chat/completions";
-    public string CompletionEndpoint { get; private set; } = "/completions";
+    public string ChatEndpoint { get; private set; } = "chat/completions";
+    public string CompletionEndpoint { get; private set; } = "completions";
     public readonly string UserBalanceEndpoint = "/user/balance";
 
     /// <summary>
