@@ -1,4 +1,3 @@
-using System.Threading;
 using DeepSeek.AspNetCore;
 using DeepSeek.Core;
 using DeepSeek.Core.Models;
@@ -56,7 +55,7 @@ app.MapGet("/chat", async (HttpContext context, [FromServices] DeepSeekClient cl
     }
     catch (Exception ex)
     {
-        await context.Response.WriteAsync("暂时无法提供服务" + ex.Message);
+        await context.Response.WriteAsync("锟斤拷时锟睫凤拷锟结供锟斤拷锟斤拷" + ex.Message);
     }
     await context.Response.CompleteAsync();
 });

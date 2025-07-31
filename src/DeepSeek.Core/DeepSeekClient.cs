@@ -1,11 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using DeepSeek.Core.Models;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
-using System.Threading.Channels;
-using DeepSeek.Core.Models;
 
 namespace DeepSeek.Core;
 
@@ -14,19 +13,19 @@ public class DeepSeekClient
     /// <summary>
     /// base address
     /// </summary>
-    public readonly string BaseAddress = "https://api.deepseek.com";
-    public readonly string BetaBaseAddress = "https://api.deepseek.com/beta";
+    public readonly string BaseAddress = "https://api.deepseek.com/";
+    public readonly string BetaBaseAddress = "https://api.deepseek.com/beta/";
     /// <summary>
     /// chat endpoint
     /// </summary>
     public string ChatEndpoint { get; private set; } = "chat/completions";
     public string CompletionEndpoint { get; private set; } = "completions";
-    public readonly string UserBalanceEndpoint = "/user/balance";
+    public readonly string UserBalanceEndpoint = "user/balance";
 
     /// <summary>
     /// list models endpoint
     /// </summary>
-    public readonly string ModelsEndpoint = "/models";
+    public readonly string ModelsEndpoint = "models";
 
     /// <summary>
     ///  done sign

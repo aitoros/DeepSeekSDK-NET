@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace DeepSeek.Core.Models;
 public class CompletionRequest
@@ -43,12 +37,12 @@ public class CompletionRequest
     /// <summary>
     /// Up to 16 sequences where the API will stop generating further tokens.
     /// </summary>
-    public List<string>? Stop { get; set; } 
+    public List<string>? Stop { get; set; }
     /// <summary>
     /// 如果设置为 True，将会以 SSE（server-sent events）的形式以流式发送消息增量。消息流以 data: [DONE] 结尾。
     /// </summary>
     [JsonInclude]
-    public bool Stream { get; set; } 
+    public bool Stream { get; set; }
 
     /// <summary>
     /// suffix
