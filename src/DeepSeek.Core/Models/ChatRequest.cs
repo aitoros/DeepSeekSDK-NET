@@ -108,7 +108,8 @@ public class RequestFunction
 {
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public JsonNode Parameters { get; set; } = new JsonObject();
+    public JsonNode Parameters { get; set; } =
+        new JsonObject { ["type"] = "object", ["properties"] = new JsonObject() };
 }
 
 public class ResponseFormat
